@@ -100,9 +100,12 @@ class Plugin extends AbstractPlugin
         $commands = array();
         foreach ($plugins as $plugin) {
             $events = array_keys($plugin->getSubscribedEvents());
-            $commandEvents = preg_filter('/^command\.(.+)$/', '$1', $events);
-            foreach ($commandEvents as $event) {
-                $commands[$event] = true;
+            $commandEvents = array();
+            foreach ($events as $event) {
+                if (!preg_match('/^command\.(.+)$/', $event, $match)) {
+                    continue;
+                }
+                $commands[$match[1]] = true;
             }
         }
         return array_keys($commands);
