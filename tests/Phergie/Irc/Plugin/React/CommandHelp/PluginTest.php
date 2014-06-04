@@ -124,11 +124,11 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $foo = $this->getMockPlugin();        
         Phake::when($foo)
             ->getSubscribedEvents()
-            ->thenReturn(array('command.foo' => 'handleFoo'));
+            ->thenReturn(array('command.foo' => 'handleFoo', 'command.foo.help' => 'handleFooHelp'));
         $bar = $this->getMockPlugin();
         Phake::when($bar)
             ->getSubscribedEvents()
-            ->thenReturn(array('command.bar' => 'handleBar'));
+            ->thenReturn(array('command.bar' => 'handleBar', 'command.bar.help' => 'handleBarHelp'));
 
         $connection = $this->getMockConnection();
         Phake::when($connection)->getNickname()->thenReturn('bot');
