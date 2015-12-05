@@ -24,17 +24,20 @@ See Phergie documentation for more information on
 ## Configuration
 
 ```php
-new \Phergie\Irc\Plugin\React\CommandHelp\Plugin([
 
-    // All configuration is optional
+// All configuration is optional
 
-    // List of plugins that subscribe to command events
-    // Used to return a list of available commands to users
-    // All elements must implement \Phergie\Irc\Bot\React\PluginInterface
-    'plugins' => [
-        // ..
-    ],
 
+    new \Phergie\Irc\Plugin\React\CommandHelp\Plugin(
+        [
+            // List of plugins that subscribe to command events
+            // Used to return a list of available commands to users
+            // All elements must implement \Phergie\Irc\Bot\React\PluginInterface
+            'plugins' => [
+                new Phergie\Irc\Plugin\React\TableFlip\Plugin()
+            ]
+        ]
+    ),
     // Text to precede the list of available commands when providing it to
     // users
     'listText' => 'Available commands: ',
