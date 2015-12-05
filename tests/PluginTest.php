@@ -11,10 +11,12 @@
 namespace Phergie\Irc\Tests\Plugin\React\CommandHelp;
 
 use Phake;
+use ReflectionMethod;
 use Phergie\Irc\Bot\React\EventQueueInterface;
 use Phergie\Irc\Bot\React\PluginInterface;
 use Phergie\Irc\Plugin\React\Command\CommandEvent;
 use Phergie\Irc\Plugin\React\CommandHelp\Plugin;
+
 
 /**
  * Tests for the Plugin class.
@@ -158,6 +160,42 @@ class PluginTest extends \PHPUnit_Framework_TestCase
     {
         $plugin = new Plugin;
         $this->assertInternalType('array', $plugin->getSubscribedEvents());
+    }
+
+    public function testGetAlphabetizedList()
+    {
+        // We have to set the private method accessible
+        $method = new \ReflectionMethod(
+            '\Phergie\Irc\Plugin\React\CommandHelp\Plugin', 'alphabetize'
+        );
+        $method->setAccessible(TRUE);
+
+        //Test our method with a few plugins
+        $this->assertEquals(
+            'test, test, test',
+            $method->invoke(
+                new Plugin([
+                    'plugins' => [
+                        'plugins' => [
+                            new \Phergie\Irc\Plugin\React\TableFlip\Plugin(),
+                            new \Phergie\Plugin\Http\Plugin(),
+                            new \Phergie\Irc\Plugin\React\Command\Plugin(),
+                        ]
+                    ]
+                ]),
+                []
+            )
+        );
+
+//        $plugin = new Plugin([
+//            'plugins' => [
+//                'plugins' => [
+//                    new \Phergie\Irc\Plugin\React\TableFlip\Plugin(),
+//                    new \Phergie\Plugin\Http\Plugin(),
+//                    new \Phergie\Irc\Plugin\React\Command\Plugin(),
+//                ]
+//            ]
+//        ]);
     }
 
     /**

@@ -108,7 +108,8 @@ class Plugin extends AbstractPlugin
                 $commands[$match[1]] = true;
             }
         }
-        return array_keys($commands);
+
+        return $this->alphabetize($commands);
     }
 
     /**
@@ -164,5 +165,12 @@ class Plugin extends AbstractPlugin
         $method = 'irc' . $event->getCommand();
         $message = $address . $this->listText . implode(' ', $this->commands);
         $queue->$method($target, $message);
+    }
+
+    private function alphabetize( $commands )
+    {
+        $commandList = array_keys($commands);
+
+        return sort( $commandList, SORT_NATURAL | SORT_FLAG_CASE);
     }
 }
