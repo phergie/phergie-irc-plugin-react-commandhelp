@@ -74,6 +74,8 @@ class Plugin extends AbstractPlugin
      * Extracts command information from configuration.
      *
      * @param array $config
+     *
+     * @return array
      */
     protected function getCommands(array $config)
     {
@@ -167,20 +169,17 @@ class Plugin extends AbstractPlugin
         $queue->$method($target, $message);
     }
 
+    /**
+     * @param $commands
+     *
+     * @return array
+     */
     private function alphabetize( $commands )
     {
         $commandList = array_keys($commands);
-//        die(var_dump($commandList));
-        /*
-         * array(2) {
-              [0]=>
-              string(9) "tableflip"
-              [1]=>
-              string(4) "bofh"
-            }
-         */
+
         sort($commandList, SORT_NATURAL | SORT_FLAG_CASE);
-//        die(var_dump(array_values($commandList)));
+
         return array_values($commandList);
     }
 }
