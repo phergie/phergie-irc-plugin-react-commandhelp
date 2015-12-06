@@ -186,16 +186,6 @@ class PluginTest extends \PHPUnit_Framework_TestCase
                 []
             )
         );
-
-//        $plugin = new Plugin([
-//            'plugins' => [
-//                'plugins' => [
-//                    new \Phergie\Irc\Plugin\React\TableFlip\Plugin(),
-//                    new \Phergie\Plugin\Http\Plugin(),
-//                    new \Phergie\Irc\Plugin\React\Command\Plugin(),
-//                ]
-//            ]
-//        ]);
     }
 
     /**
