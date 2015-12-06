@@ -171,6 +171,7 @@ class Plugin extends AbstractPlugin
     {
         $commandList = array_keys($commands);
 
-        return sort( $commandList, SORT_NATURAL | SORT_FLAG_CASE);
+//        return sort( $commandList, SORT_NATURAL | SORT_FLAG_CASE);
+        return $commandList;
     }
 }
