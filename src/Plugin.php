@@ -170,8 +170,9 @@ class Plugin extends AbstractPlugin
     private function alphabetize( $commands )
     {
         $commandList = array_keys($commands);
+        $alphabetizedList = sort($commandList, SORT_NATURAL | SORT_FLAG_CASE);
 
 //        return sort( $commandList, SORT_NATURAL | SORT_FLAG_CASE);
-        return $commandList;
+        return $alphabetizedList;
     }
 }
