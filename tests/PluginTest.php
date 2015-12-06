@@ -16,7 +16,8 @@ use Phergie\Irc\Bot\React\EventQueueInterface;
 use Phergie\Irc\Bot\React\PluginInterface;
 use Phergie\Irc\Plugin\React\Command\CommandEvent;
 use Phergie\Irc\Plugin\React\CommandHelp\Plugin;
-
+use Phergie\Irc\Plugin\React\TableFlip\Plugin as Tableflip;
+use Phergie\Irc\Plugin\React\BOFH\Plugin as BOFH;
 
 /**
  * Tests for the Plugin class.
@@ -150,7 +151,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $plugin->handleHelpCommand($event, $queue);
 
         Phake::verify($queue)
-            ->ircPrivmsg($responseTarget, $address . 'foo bar');
+            ->ircPrivmsg($responseTarget, $address . 'bar foo');
     }
 
     /**
@@ -172,14 +173,13 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
         //Test our method with a few plugins
         $this->assertEquals(
-            'test, test, test',
+            'bofh tableflip',
             $method->invoke(
                 new Plugin([
                     'plugins' => [
                         'plugins' => [
-                            new \Phergie\Irc\Plugin\React\TableFlip\Plugin(),
-                            new \Phergie\Plugin\Http\Plugin(),
-                            new \Phergie\Irc\Plugin\React\Command\Plugin(),
+                            $this->getMockPlugin(),
+                            $this->getMockPlugin(),
                         ]
                     ]
                 ]),

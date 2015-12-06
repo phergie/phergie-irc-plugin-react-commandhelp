@@ -16,7 +16,9 @@
     },
     "require-dev": {
         "phpunit/phpunit": "4.5.*",
-        "phake/phake": "2.0.0-beta2"
+        "phake/phake": "@stable",
+        "phergie/phergie-irc-plugin-react-bofh": "^1",
+        "elstamey/phergie-irc-plugin-react-tableflip": "dev-master"
     },
     "autoload": {
         "psr-4": {
