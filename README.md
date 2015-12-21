@@ -13,7 +13,7 @@ The recommended method of installation is [through composer](http://getcomposer.
 ```JSON
 {
     "require": {
-        "phergie/phergie-irc-plugin-react-commandhelp": "dev-master"
+        "phergie/phergie-irc-plugin-react-commandhelp": "~2"
     }
 }
 ```
