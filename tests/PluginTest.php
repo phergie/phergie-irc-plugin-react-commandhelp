@@ -11,13 +11,11 @@
 namespace Phergie\Irc\Tests\Plugin\React\CommandHelp;
 
 use Phake;
-use ReflectionMethod;
 use Phergie\Irc\Bot\React\EventQueueInterface;
 use Phergie\Irc\Bot\React\PluginInterface;
 use Phergie\Irc\Plugin\React\Command\CommandEvent;
 use Phergie\Irc\Plugin\React\CommandHelp\Plugin;
-use Phergie\Irc\Plugin\React\TableFlip\Plugin as Tableflip;
-use Phergie\Irc\Plugin\React\BOFH\Plugin as BOFH;
+
 
 /**
  * Tests for the Plugin class.
@@ -162,30 +160,48 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $plugin = new Plugin;
         $this->assertInternalType('array', $plugin->getSubscribedEvents());
     }
-
-    public function testGetAlphabetizedList()
+    
+    /**
+     * Tests alphabetizing the list of available commands.
+     *
+     * @param string $requestTarget
+     * @param string $responseTarget
+     * @param string $address
+     * @param string|null $listText
+     * @dataProvider dataProviderHandleHelpCommandListsCommands
+     */
+    public function testGetAlphabetizedList($requestTarget, $responseTarget, $address, $listText = null)
     {
-        // We have to set the private method accessible
-        $method = new \ReflectionMethod(
-            '\Phergie\Irc\Plugin\React\CommandHelp\Plugin', 'alphabetize'
-        );
-        $method->setAccessible(TRUE);
+        $foo = $this->getMockPlugin();
+        Phake::when($foo)
+             ->getSubscribedEvents()
+             ->thenReturn(array('command.foo' => 'handleFoo', 'command.foo.help' => 'handleFooHelp'));
+        $bar = $this->getMockPlugin();
+        Phake::when($bar)
+             ->getSubscribedEvents()
+             ->thenReturn(array('command.bar' => 'handleBar', 'command.bar.help' => 'handleBarHelp'));
+        $abc = $this->getMockPlugin();
+        Phake::when($abc)
+             ->getSubscribedEvents()
+             ->thenReturn(array('command.abc' => 'handleAbc', 'command.abc.help' => 'handleAbcHelp'));
+        $connection = $this->getMockConnection();
+        Phake::when($connection)->getNickname()->thenReturn('bot');
 
-        //Test our method with a few plugins
-        $this->assertEquals(
-            'bofh tableflip',
-            $method->invoke(
-                new Plugin([
-                    'plugins' => [
-                        'plugins' => [
-                            $this->getMockPlugin(),
-                            $this->getMockPlugin(),
-                        ]
-                    ]
-                ]),
-                []
-            )
-        );
+        $event = $this->getMockCommandEvent();
+        Phake::when($event)->getConnection()->thenReturn($connection);
+        Phake::when($event)->getCommand()->thenReturn('PRIVMSG');
+        Phake::when($event)->getTargets()->thenReturn(array($requestTarget));
+        Phake::when($event)->getNick()->thenReturn('user');
+        $queue = $this->getMockEventQueue();
+
+        $plugin = new Plugin(array(
+            'plugins' => array($foo, $bar, $abc),
+            'listText' => $listText,
+        ));
+        $plugin->handleHelpCommand($event, $queue);
+
+        Phake::verify($queue)
+             ->ircPrivmsg($responseTarget, $address . 'abc bar foo');
     }
 
     /**
@@ -193,7 +209,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
      *
      * @return \Phergie\Irc\Bot\React\PluginInterface
      */
-    protected function getMockPlugin()
+    private function getMockPlugin()
     {
         $plugin = Phake::mock('\Phergie\Irc\Bot\React\PluginInterface');
         Phake::when($plugin)->getSubscribedEvents()->thenReturn(array());
