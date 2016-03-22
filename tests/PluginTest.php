@@ -16,6 +16,7 @@ use Phergie\Irc\Bot\React\PluginInterface;
 use Phergie\Irc\Plugin\React\Command\CommandEvent;
 use Phergie\Irc\Plugin\React\CommandHelp\Plugin;
 
+
 /**
  * Tests for the Plugin class.
  *
@@ -148,7 +149,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $plugin->handleHelpCommand($event, $queue);
 
         Phake::verify($queue)
-            ->ircPrivmsg($responseTarget, $address . 'foo bar');
+            ->ircPrivmsg($responseTarget, $address . 'bar foo');
     }
 
     /**
@@ -159,13 +160,56 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $plugin = new Plugin;
         $this->assertInternalType('array', $plugin->getSubscribedEvents());
     }
+    
+    /**
+     * Tests alphabetizing the list of available commands.
+     *
+     * @param string $requestTarget
+     * @param string $responseTarget
+     * @param string $address
+     * @param string|null $listText
+     * @dataProvider dataProviderHandleHelpCommandListsCommands
+     */
+    public function testGetAlphabetizedList($requestTarget, $responseTarget, $address, $listText = null)
+    {
+        $foo = $this->getMockPlugin();
+        Phake::when($foo)
+             ->getSubscribedEvents()
+             ->thenReturn(array('command.foo' => 'handleFoo', 'command.foo.help' => 'handleFooHelp'));
+        $bar = $this->getMockPlugin();
+        Phake::when($bar)
+             ->getSubscribedEvents()
+             ->thenReturn(array('command.bar' => 'handleBar', 'command.bar.help' => 'handleBarHelp'));
+        $abc = $this->getMockPlugin();
+        Phake::when($abc)
+             ->getSubscribedEvents()
+             ->thenReturn(array('command.abc' => 'handleAbc', 'command.abc.help' => 'handleAbcHelp'));
+        $connection = $this->getMockConnection();
+        Phake::when($connection)->getNickname()->thenReturn('bot');
+
+        $event = $this->getMockCommandEvent();
+        Phake::when($event)->getConnection()->thenReturn($connection);
+        Phake::when($event)->getCommand()->thenReturn('PRIVMSG');
+        Phake::when($event)->getTargets()->thenReturn(array($requestTarget));
+        Phake::when($event)->getNick()->thenReturn('user');
+        $queue = $this->getMockEventQueue();
+
+        $plugin = new Plugin(array(
+            'plugins' => array($foo, $bar, $abc),
+            'listText' => $listText,
+        ));
+        $plugin->handleHelpCommand($event, $queue);
+
+        Phake::verify($queue)
+             ->ircPrivmsg($responseTarget, $address . 'abc bar foo');
+    }
 
     /**
      * Returns a mock plugin.
      *
      * @return \Phergie\Irc\Bot\React\PluginInterface
      */
-    protected function getMockPlugin()
+    private function getMockPlugin()
     {
         $plugin = Phake::mock('\Phergie\Irc\Bot\React\PluginInterface');
         Phake::when($plugin)->getSubscribedEvents()->thenReturn(array());

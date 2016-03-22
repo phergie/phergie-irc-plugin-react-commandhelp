@@ -15,8 +15,8 @@
         "phergie/phergie-irc-plugin-react-command": "~2"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.1.*",
-        "phake/phake": "2.0.0-beta2"
+        "phpunit/phpunit": "4.5.*",
+        "phake/phake": "@stable"
     },
     "autoload": {
         "psr-4": {
