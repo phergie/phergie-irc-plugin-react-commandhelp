@@ -1,0 +1,3 @@
+; commands to use for phpunit and phpdoc
+[commands]
+phpunit = /vendor/bin/phpunit

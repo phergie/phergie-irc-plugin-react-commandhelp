@@ -2,7 +2,11 @@
 
 ## 2.1.x
 
+* Added producer config file
 * Added CHANGES.md File
+* Add contributing file
+* rename LICENSE LICENSE.md
+* Added rename phpunit.xml phpunit.xml.dist for easy user overrides
 
 ## 2.1.0
 
