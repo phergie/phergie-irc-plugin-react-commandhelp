@@ -170,6 +170,8 @@ class Plugin extends AbstractPlugin
     }
 
     /**
+     * Sort array of commands
+     *
      * @param $commands
      *
      * @return array

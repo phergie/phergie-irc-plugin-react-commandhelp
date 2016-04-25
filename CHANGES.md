@@ -2,6 +2,7 @@
 
 ## 2.1.x
 
+* add doc block for alphabetize() method 
 * Added producer config file
 * Added CHANGES.md File
 * Add contributing file
