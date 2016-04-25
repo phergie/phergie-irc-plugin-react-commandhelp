@@ -2,7 +2,9 @@
 
 ## 2.1.x
 
-* add doc block for alphabetize() method 
+* update copyright years
+* update package docblock above Class
+* add doc block for alphabetize() method
 * Added producer config file
 * Added CHANGES.md File
 * Add contributing file
