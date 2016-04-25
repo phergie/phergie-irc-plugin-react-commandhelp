@@ -19,7 +19,7 @@ use Phergie\Irc\Plugin\React\Command\CommandEvent;
  * Plugin for providing usage information for available bot commands to users.
  *
  * @category Phergie
- * @package Phergie\Irc\Plugin\React\CommandHelp
+ * @package phergie/phergie-irc-plugin-react-commandhelp
  */
 class Plugin extends AbstractPlugin
 {
