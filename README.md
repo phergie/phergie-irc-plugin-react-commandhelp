@@ -32,7 +32,7 @@ See Phergie documentation for more information on
         // All elements must implement \Phergie\Irc\Bot\React\PluginInterface
         'plugins' => [
             new Phergie\Irc\Plugin\React\TableFlip\Plugin()
-        ]
+        ],
 
         // Text to precede the list of available commands when providing it to
         // users
