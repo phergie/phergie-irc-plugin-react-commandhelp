@@ -10,12 +10,8 @@ This plugin is intended to complement the [Command plugin](https://github.com/ph
 
 The recommended method of installation is [through composer](http://getcomposer.org).
 
-```JSON
-{
-    "require": {
-        "phergie/phergie-irc-plugin-react-commandhelp": "~2"
-    }
-}
+```
+composer require phergie/phergie-irc-plugin-react-commandhelp
 ```
 
 See Phergie documentation for more information on
